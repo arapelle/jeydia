@@ -27,5 +27,6 @@ message(STATUS "PROJECT : ${PROJECT_NAME} ${PROJECT_VERSION}")
 #-----
 include(CTest)
 
+add_subdirectory(jeydia_lib)
 add_subdirectory(jeydia_server)
 #-----
