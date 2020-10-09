@@ -6,10 +6,10 @@
 
 namespace jeydia
 {
-class times_up_module : public module
+class Times_up_module : public Module
 {
 public:
-    virtual ~times_up_module() override = default;
+    virtual ~Times_up_module() override = default;
 
     virtual void run() override
     {
@@ -20,14 +20,14 @@ public:
     }
 };
 
-class first_module : public loop_module<first_module>
+class First_module : public Loop_module<First_module>
 {
 private:
-    using base_ = loop_module<first_module>;
+    using base_ = Loop_module<First_module>;
 
 public:
-    first_module() : base_("first_module") {}
-    virtual ~first_module() override = default;
+    First_module() : base_("first_module") {}
+    virtual ~First_module() override = default;
 
     void run_loop(appt::seconds dt)
     {
@@ -40,14 +40,14 @@ public:
     }
 };
 
-class second_module : public loop_module<second_module>
+class Second_module : public Loop_module<Second_module>
 {
 private:
-    using base_ = loop_module<second_module>;
+    using base_ = Loop_module<Second_module>;
 
 public:
-    second_module() : base_("second_module") {}
-    virtual ~second_module() override = default;
+    Second_module() : base_("second_module") {}
+    virtual ~Second_module() override = default;
 
     void run_loop(appt::seconds dt)
     {
@@ -65,10 +65,10 @@ public:
 int main(int argc, char** argv)
 {
     spdlog::set_level(spdlog::level::trace);
-    jeydia::application app(argc, argv);
-    app.create_main_module<jeydia::times_up_module>();
-    app.create_module<jeydia::first_module>().set_frequency(2);
-    app.create_module<jeydia::second_module>().set_frequency(3);
+    jeydia::Application app(argc, argv);
+    app.create_main_module<jeydia::Times_up_module>();
+    app.create_module<jeydia::First_module>().set_frequency(2);
+    app.create_module<jeydia::Second_module>().set_frequency(3);
     app.init();
     app.run();
 

@@ -7,11 +7,11 @@
 namespace jeydia
 {
 
-using module = appt::module<application>;
+using Module = appt::module<Application>;
 
-using logging_module = appt::mdec::logging<appt::module_logger, module>;
+using Logging_module = appt::mdec::logging<appt::module_logger, Module>;
 
 template <typename module_type>
-using loop_module = appt::mdec::loop<logging_module, module_type>;
+using Loop_module = appt::mdec::loop<Logging_module, module_type>;
 
 }
