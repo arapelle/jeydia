@@ -8,23 +8,26 @@
 
 namespace jeydia
 {
-
-class application : public appt::adec::logging<appt::application_logger,
-                                               appt::adec::multi_user<user,
-                                                                      appt::multi_task_application<application>>>
+class application_base
 {
 private:
-    using base_ = appt::adec::logging<appt::application_logger,
-                                      appt::adec::multi_user<user,
-                                                             appt::multi_task_application<application>>>;
+    application_base() = delete;
+    using logging_application_ = appt::adec::logging<appt::application_logger, appt::application>;
+    using multi_user_application_ = appt::adec::multi_user<user, logging_application_>;
+    using multi_task_application_ = appt::adec::multi_task<multi_user_application_>;
+
+public:
+    template <class app_type>
+    using type = typename multi_task_application_::rebind_t<app_type>;
+};
+
+class application : public application_base::type<application>
+{
+private:
+    using base_ = application_base::type<application>;
+
 public:
     using base_::base_;
-
-    void init()
-    {
-        logger()->set_level(spdlog::level::trace);
-        base_::init();
-    }
 };
 
 }
