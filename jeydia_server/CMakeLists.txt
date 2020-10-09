@@ -15,6 +15,7 @@ message(STATUS "PROJECT : ${PROJECT_NAME} ${PROJECT_VERSION}")
 # Headers:
 set(headers
     include/jeydia_server/application.hpp
+    include/jeydia_server/module.hpp
 )
 
 # Sources:
@@ -31,7 +32,7 @@ add_cpp_executable(${PROJECT_NAME}
     SOURCES ${sources}
     )
 
-find_package(arba 0.13 CONFIG REQUIRED)
+find_package(arba 0.15 CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC arba::arba)
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME})

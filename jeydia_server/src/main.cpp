@@ -1,12 +1,12 @@
 #ifndef NDEBUG
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #endif
-#include <jeydia_server/loop_module.hpp>
+#include <jeydia_server/module.hpp>
 #include <jeydia_server/application.hpp>
 
 namespace jeydia
 {
-class times_up_module : public appt::module<application>
+class times_up_module : public module
 {
 public:
     virtual ~times_up_module() override = default;
@@ -49,11 +49,6 @@ public:
     second_module() : base_("second_module") {}
     virtual ~second_module() override = default;
 
-    virtual void init() override
-    {
-        logger()->set_level(spdlog::level::trace);
-    }
-
     void run_loop(appt::seconds dt)
     {
         SPDLOG_LOGGER_INFO(logger(), dt);
@@ -69,6 +64,7 @@ public:
 
 int main(int argc, char** argv)
 {
+    spdlog::set_level(spdlog::level::trace);
     jeydia::application app(argc, argv);
     app.create_main_module<jeydia::times_up_module>();
     app.create_module<jeydia::first_module>().set_frequency(2);
