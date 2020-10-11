@@ -23,12 +23,17 @@ public:
     inline Game_module& game_module() { return *game_module_; }
     inline const Position& position() const { return position_; }
     inline Position& position() { return position_; }
+    inline const int16_t& energy() const { return energy_; }
+    inline int16_t& energy() { return energy_; }
+    inline void set_energy(int16_t energy) { energy_ = energy; }
+    inline bool is_active() const { return energy_ >= 0; }
 
 private:
     Agent_id name_;
     User* user_ = nullptr;
     Game_module* game_module_ = nullptr;
     Position position_ = bad_position;
+    int16_t energy_ = 0;
 };
 
 }
