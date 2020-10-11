@@ -23,6 +23,7 @@ set(headers
 
 # Sources:
 set(sources
+    src/application.cpp
     src/map.cpp
     src/main.cpp
     src/square.cpp
