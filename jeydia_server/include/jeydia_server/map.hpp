@@ -3,6 +3,7 @@
 #include "square.hpp"
 #include "map_types.hpp"
 #include <grid/grid.hpp>
+#include <dirn/direction4.hpp>
 #include <filesystem>
 #include <spdlog/fmt/ostr.h>
 
@@ -22,6 +23,7 @@ public:
 
     void set_game_module(Game_module& module);
     bool place_agent(Agent& agent, Position position);
+    bool move_agent(Agent& agent, dirn::direction4 dir);
     bool read_from_file(const std::filesystem::path& filepath);
 
 private:

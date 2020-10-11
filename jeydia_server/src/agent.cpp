@@ -10,6 +10,33 @@ Agent::Agent(Agent_id name, User& user, Game_module& game_module, int16_t energy
     : name_(name), user_(&user), game_module_(&game_module), energy_(energy)
 {}
 
+//----
+
+bool Move_action::is_executable(const Agent &agent) const
+{
+    return agent.is_active()
+            && dir.is_valid()
+            && agent.energy() >= cost;
+}
+
+bool Move_action::execute(Agent &agent) const
+{
+    if (is_executable(agent))
+    {
+        Game_module& game_module = agent.game_module();
+        Map& map = game_module.map();
+        if (map.move_agent(agent, dir))
+        {
+            agent.energy() -= cost;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+//----
+
 bool Split_action::is_executable(const Agent& agent) const
 {
     return agent.is_active()

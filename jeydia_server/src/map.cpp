@@ -2,6 +2,7 @@
 #include <jeydia_server/agent.hpp>
 #include <jeydia_server/game_module.hpp>
 #include <inis/inis.hpp>
+#include <dirn/neighbourhood.hpp>
 #include <spdlog/spdlog.h>
 #include <iostream>
 
@@ -33,6 +34,37 @@ bool Map::place_agent(Agent& agent, Position position)
             square.set_main(agent.name());
             agent.position() = position;
             return true;
+        }
+    }
+
+    return false;
+}
+
+bool Map::move_agent(Agent& agent, dirn::direction4 dir)
+{
+    if (!game_module_)
+        throw std::runtime_error("This map must be linked to a game module.");
+    if (agent.position() == bad_position)
+    {
+        SPDLOG_LOGGER_ERROR(game_module_->logger(), "The agent is not placed on this map.");
+        return false;
+    }
+
+    if (dir.is_valid())
+    {
+        Position pos = agent.position();
+        Position npos = dirn::neighbour(pos, dir, bad_position);
+        if (contains(npos))
+        {
+            Square& nsquare = get(npos);
+            if (nsquare.is_free())
+            {
+                if (nsquare.main() == Square::ENERGY)
+                    ++agent.energy();
+                Square& square = get(pos);
+                nsquare.set_main(square.main());
+                square.set_main(Square::EMPTY);
+            }
         }
     }
 

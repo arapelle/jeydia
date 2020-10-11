@@ -37,6 +37,18 @@ private:
     int16_t energy_ = 0;
 };
 
+class Move_action
+{
+public:
+    static constexpr uint16_t cost = 0;
+
+public:
+    dirn::direction4 dir = dirn::cartographic_directions4::bad_direction;
+
+    bool is_executable(const Agent& agent) const;
+    bool execute(Agent& agent) const;
+};
+
 class Split_action
 {
 public:
