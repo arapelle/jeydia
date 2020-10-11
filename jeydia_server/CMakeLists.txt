@@ -19,15 +19,18 @@ set(headers
     include/jeydia_server/application.hpp
     include/jeydia_server/map.hpp
     include/jeydia_server/module.hpp
+    include/jeydia_server/user.hpp
 )
 
 # Sources:
 set(sources
+    src/agent.cpp
     src/application.cpp
     src/map.cpp
     src/main.cpp
     src/square.cpp
     src/game_module.cpp
+    src/user.cpp
 )
 
 # Add C++ library
