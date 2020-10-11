@@ -2,6 +2,7 @@
 
 #include "map.hpp"
 #include "module.hpp"
+#include <wgen/default_syllabary.hpp>
 
 namespace jeydia
 {
@@ -18,8 +19,11 @@ public:
     virtual void init() override;
     void run_loop(appt::seconds dt);
 
+    Agent_id generate_agent_id() const;
+
 private:
     Map map_;
+    wgen::default_syllabary syllabary_;
 };
 
 }

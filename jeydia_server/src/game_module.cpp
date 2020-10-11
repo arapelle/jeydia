@@ -21,4 +21,9 @@ void Game_module::run_loop(appt::seconds dt)
 {
 }
 
+Agent_id Game_module::generate_agent_id() const
+{
+    return syllabary_.random_name64(sizeof(Agent_id));
+}
+
 }
