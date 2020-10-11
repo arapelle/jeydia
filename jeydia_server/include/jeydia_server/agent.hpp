@@ -1,5 +1,6 @@
 #pragma once
 
+#include "map_types.hpp"
 #include <strn/string64.hpp>
 
 namespace jeydia
@@ -20,11 +21,14 @@ public:
     inline User& user() { return *user_; }
     inline const Game_module& game_module() const { return *game_module_; }
     inline Game_module& game_module() { return *game_module_; }
+    inline const Position& position() const { return position_; }
+    inline Position& position() { return position_; }
 
 private:
     Agent_id name_;
     User* user_ = nullptr;
     Game_module* game_module_ = nullptr;
+    Position position_ = bad_position;
 };
 
 }
