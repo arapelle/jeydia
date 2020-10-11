@@ -1,5 +1,6 @@
 #include <jeydia_server/map.hpp>
 #include <jeydia_server/agent.hpp>
+#include <jeydia_server/game_module.hpp>
 #include <inis/inis.hpp>
 #include <spdlog/spdlog.h>
 #include <iostream>
@@ -19,7 +20,10 @@ bool Map::place_agent(Agent& agent, Position position)
     if (!game_module_)
         throw std::runtime_error("This map must be linked to a game module.");
     if (agent.position() != bad_position)
+    {
         SPDLOG_LOGGER_ERROR(game_module_->logger(), "The agent has already a position.");
+        return false;
+    }
 
     if (contains(position))
     {

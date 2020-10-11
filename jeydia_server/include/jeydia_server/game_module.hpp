@@ -19,6 +19,8 @@ public:
     virtual void init() override;
     void run_loop(appt::seconds dt);
 
+    inline const Map& map() const { return map_; }
+    inline Map& map() { return map_; }
     Agent_id generate_agent_id() const;
 
 private:

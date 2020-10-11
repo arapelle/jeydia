@@ -2,6 +2,7 @@
 
 #include "map_types.hpp"
 #include <strn/string64.hpp>
+#include <dirn/cartographic_directions4.hpp>
 
 namespace jeydia
 {
@@ -34,6 +35,19 @@ private:
     Game_module* game_module_ = nullptr;
     Position position_ = bad_position;
     int16_t energy_ = 0;
+};
+
+class Split_action
+{
+public:
+    static constexpr uint16_t cost = 2;
+
+public:
+    dirn::direction4 dir = dirn::cartographic_directions4::bad_direction;
+    uint16_t energy = 0;
+
+    bool is_executable(const Agent& agent) const;
+    bool execute(Agent& agent) const;
 };
 
 }
