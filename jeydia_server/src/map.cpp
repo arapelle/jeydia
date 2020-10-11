@@ -1,10 +1,39 @@
 #include <jeydia_server/map.hpp>
+#include <jeydia_server/agent.hpp>
 #include <inis/inis.hpp>
 #include <spdlog/spdlog.h>
 #include <iostream>
 
 namespace jeydia
 {
+
+void Map::set_game_module(Game_module& module)
+{
+    if (game_module_)
+        throw std::runtime_error("This map is already linked to a game module.");
+    game_module_ = &module;
+}
+
+bool Map::place_agent(Agent& agent, Position position)
+{
+    if (!game_module_)
+        throw std::runtime_error("This map must be linked to a game module.");
+    if (agent.position() != bad_position)
+        SPDLOG_LOGGER_ERROR(game_module_->logger(), "The agent has already a position.");
+
+    if (contains(position))
+    {
+        Square& square = get(position);
+        if (square.is_free())
+        {
+            square.set_main(agent.name());
+            agent.position() = position;
+            return true;
+        }
+    }
+
+    return false;
+}
 
 bool Map::read_from_file(const std::filesystem::path& filepath)
 {

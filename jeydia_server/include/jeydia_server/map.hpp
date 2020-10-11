@@ -1,6 +1,7 @@
 #pragma once
 
 #include "square.hpp"
+#include "map_types.hpp"
 #include <grid/grid.hpp>
 #include <filesystem>
 #include <spdlog/fmt/ostr.h>
@@ -8,19 +9,27 @@
 namespace jeydia
 {
 
+class Game_module;
+class Agent;
+
 class Map : public grid::grid<Square>
 {
 private:
-    using base_ = ::grid::grid<Square>;
+    using Base_ = ::grid::grid<Square>;
 
 public:
-    using base_::base_;
+    using Base_::Base_;
 
+    void set_game_module(Game_module& module);
+    bool place_agent(Agent& agent, Position position);
     bool read_from_file(const std::filesystem::path& filepath);
 
 private:
     bool read_terrain_from_stream_(std::istream& stream);
     bool read_main_from_stream_(std::istream& stream);
+
+private:
+    Game_module* game_module_ = nullptr;
 };
 
 template <class Output_stream>
