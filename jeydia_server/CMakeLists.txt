@@ -15,6 +15,7 @@ message(STATUS "PROJECT : ${PROJECT_NAME} ${PROJECT_VERSION}")
 # Headers:
 set(headers
     include/jeydia_server/square.hpp
+    include/jeydia_server/game_module.hpp
     include/jeydia_server/application.hpp
     include/jeydia_server/map.hpp
     include/jeydia_server/module.hpp
@@ -25,6 +26,7 @@ set(sources
     src/map.cpp
     src/main.cpp
     src/square.cpp
+    src/game_module.cpp
 )
 
 # Add C++ library
