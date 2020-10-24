@@ -126,11 +126,11 @@ bool Map::read_from_file(const std::filesystem::path& filepath)
     inis::section settings;
     settings.read_from_file(filepath);
 
-    const inis::section* terrain = settings.subsection_ptr("map.terrain");
-    if (terrain)
+    const inis::section* ground = settings.subsection_ptr("map.ground");
+    if (ground)
     {
-        std::istringstream stream(terrain->setting<std::string>("layer"));
-        if (!read_terrain_from_stream_(stream))
+        std::istringstream stream(ground->setting<std::string>("layer"));
+        if (!read_ground_from_stream_(stream))
             return false;
     }
 
@@ -145,7 +145,7 @@ bool Map::read_from_file(const std::filesystem::path& filepath)
     return true;
 }
 
-bool Map::read_terrain_from_stream_(std::istream& stream)
+bool Map::read_ground_from_stream_(std::istream& stream)
 {
     std::vector<std::string> lines;
     std::string line;
@@ -166,7 +166,7 @@ bool Map::read_terrain_from_stream_(std::istream& stream)
         for (uint16_t i = 0; i < width(); ++i)
         {
             char ch = lines[j][i];
-            Square square(Square::terrain_from_char(ch));
+            Square square(Square::ground_from_char(ch));
             if (square.is_bad())
             {
                 SPDLOG_ERROR("Square cannot be read: unkwnon character '{}'.", ch);

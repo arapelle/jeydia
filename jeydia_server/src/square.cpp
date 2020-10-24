@@ -3,22 +3,22 @@
 namespace jeydia
 {
 
-Square::Square(strn::string64 terrain)
-    : terrain_(terrain)
+Square::Square(strn::string64 ground)
+    : ground_(ground)
 {}
 
 bool Square::is_bad() const
 {
-    return terrain_.empty();
+    return ground_.empty();
 }
 
 bool Square::is_free() const
 {
-    return (terrain_ == PLAIN || terrain_ == VOID)
+    return (ground_ == PLAIN || ground_ == VOID)
         && !solid_body_;
 }
 
-strn::string64 Square::terrain_from_char(char ch)
+strn::string64 Square::ground_from_char(char ch)
 {
     switch (ch)
     {
@@ -34,9 +34,9 @@ strn::string64 Square::terrain_from_char(char ch)
     return BADVALUE;
 }
 
-char Square::terrain_to_char(strn::string64 terrain)
+char Square::ground_to_char(strn::string64 ground)
 {
-    switch (terrain.integer())
+    switch (ground.integer())
     {
     case VOID.integer():
         return '.';

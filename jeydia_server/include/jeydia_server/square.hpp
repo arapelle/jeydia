@@ -20,19 +20,19 @@ public:
     inline constexpr static strn::string64 BADVALUE = "BADVALUE"_s64;
 
 public:
-    Square(strn::string64 terrain = PLAIN);
+    Square(strn::string64 ground = PLAIN);
     bool is_bad() const;
     bool is_free() const;
-    inline const strn::string64& terrain() const { return terrain_; }
-    inline void set_terrain(strn::string64 terrain) { terrain_ = terrain; }
+    inline const strn::string64& ground() const { return ground_; }
+    inline void set_ground(strn::string64 ground) { ground_ = ground; }
     inline const Physics_entity* solid_body_ptr() const { return solid_body_; }
     inline Physics_entity* solid_body_ptr() { return solid_body_; }
     inline const auto& traversable_bodies() const { return traversable_bodies_; }
 //    inline auto& traversable_bodies() { return traversable_bodies_; }
 
 public:
-    static strn::string64 terrain_from_char(char ch);
-    static char terrain_to_char(strn::string64 terrain);
+    static strn::string64 ground_from_char(char ch);
+    static char ground_to_char(strn::string64 ground);
 
 public:
     inline void set_solid_body(Physics_entity& solid_body) { solid_body_ = &solid_body; }
@@ -43,7 +43,7 @@ public:
     inline auto traversable_bodies_end() { return traversable_bodies_.begin(); }
 
 private:
-    strn::string64 terrain_;
+    strn::string64 ground_;
     Physics_entity* solid_body_ = nullptr;
     std::unordered_set<Physics_entity*> traversable_bodies_;
 };
