@@ -24,14 +24,17 @@ Agent_id Game_module::generate_agent_id() const
 
 void Game_module::receive(Moved_in_event& event)
 {
-    Agent* agent = dynamic_cast<Agent*>(&event.first_body());
-    Energy_entity* energy = dynamic_cast<Energy_entity*>(&event.second_body());
+    Physics_entity* first_entity = event.first_body().user_data<Physics_entity>();
+    Physics_entity* second_entity = event.second_body().user_data<Physics_entity>();
+
+    Agent* agent = dynamic_cast<Agent*>(first_entity);
+    Energy_entity* energy = dynamic_cast<Energy_entity*>(second_entity);
     if (agent && energy)
         agent_absorbs_energy_(event, *agent, *energy);
     else
     {
-        agent = dynamic_cast<Agent*>(&event.second_body());
-        energy = dynamic_cast<Energy_entity*>(&event.first_body());
+        agent = dynamic_cast<Agent*>(second_entity);
+        energy = dynamic_cast<Energy_entity*>(first_entity);
         if (agent && energy)
             agent_absorbs_energy_(event, *agent, *energy);
     }
@@ -44,7 +47,7 @@ void Game_module::receive(Moved_out_event& event)
 void Game_module::agent_absorbs_energy_(Moved_in_event& event, Agent& agent, Energy_entity& energy)
 {
     agent.energy() += energy.count();
-    map_.remove_entity(energy);
+    map_.remove_entity(energy.physics_body());
 }
 
 void Game_module::read_map_from_file_()

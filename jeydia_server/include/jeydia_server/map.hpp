@@ -22,11 +22,12 @@ private:
 public:
     using Base_::Base_;
 
-    void set_program_tools(std::shared_ptr<spdlog::logger> logger, evnt::event_manager& event_manager);
     inline bool are_program_tools_set() const { return logger_ && event_manager_; }
-    bool place_entity(Physics_entity& entity, Position position);
-    bool move_entity(Physics_entity& entity, Direction dir);
-    void remove_entity(Physics_entity& entity);
+    void set_program_tools(std::shared_ptr<spdlog::logger> logger, evnt::event_manager& event_manager);
+
+    bool place_entity(Physics_body& entity, Position position);
+    bool move_entity(Physics_body& entity, Direction dir);
+    void remove_entity(Physics_body& entity);
 
     bool read_from_file(const std::filesystem::path& filepath);
 
@@ -35,8 +36,8 @@ private:
     bool read_main_from_stream_(std::istream& stream);
 
 private:
-    void moved_in_(Physics_entity& moving_body, Position source_position, Position target_position, Direction move_dir);
-    void moved_out_(Physics_entity& moving_body, Position source_position, Position target_position, Direction move_dir);
+    void moved_in_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir);
+    void moved_out_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir);
 
 private:
     std::shared_ptr<spdlog::logger> logger_;

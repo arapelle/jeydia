@@ -9,19 +9,19 @@ class Map;
 class Move_event
 {
 public:
-    Move_event(Map& map, Physics_entity& first_body, Physics_entity& second_body,
+    Move_event(Map& map, Physics_body& first_body, Physics_body& second_body,
                Position source_position, Position target_position,
                Direction move_dir);
-    Move_event(Map& map, Physics_entity& first_body, std::nullptr_t,
+    Move_event(Map& map, Physics_body& first_body, std::nullptr_t,
                Position source_position, Position target_position,
                Direction move_dir);
     inline const Map& map() const { return *map_; }
     inline Map& map() { return *map_; }
-    inline const Physics_entity& first_body() const { return *first_body_; }
-    inline Physics_entity& first_body() { return *first_body_; }
-    inline const Physics_entity& second_body() const { return *second_body_; }
-    inline Physics_entity& second_body() { return *second_body_; }
-    inline void set_second_body(Physics_entity& body) { second_body_ = &body; }
+    inline const Physics_body& first_body() const { return *first_body_; }
+    inline Physics_body& first_body() { return *first_body_; }
+    inline const Physics_body& second_body() const { return *second_body_; }
+    inline Physics_body& second_body() { return *second_body_; }
+    inline void set_second_body(Physics_body& body) { second_body_ = &body; }
     inline Position source_position() { return source_position_; }
     inline Position target_position() { return target_position_; }
     inline Direction move_dir() const { return move_dir_; }
@@ -30,8 +30,8 @@ public:
 
 private:
     Map* map_ = nullptr;
-    Physics_entity* first_body_;
-    Physics_entity* second_body_;
+    Physics_body* first_body_;
+    Physics_body* second_body_;
     Position source_position_;
     Position target_position_;
     Direction move_dir_;

@@ -25,7 +25,7 @@ bool Move_action::execute(Agent &agent) const
     {
         Game_module& game_module = agent.game_module();
         Map& map = game_module.map();
-        if (map.move_entity(agent, dir))
+        if (map.move_entity(agent.physics_body(), dir))
         {
             agent.energy() -= cost;
             return true;
@@ -53,7 +53,7 @@ bool Split_action::execute(Agent& agent) const
         User& user = agent.user();
         Position npos = dirn::neighbour(agent.position(), dir, bad_position);
         std::shared_ptr agent_sptr = user.create_agent(game_module);
-        if (map.place_entity(*agent_sptr, npos))
+        if (map.place_entity(agent_sptr->physics_body(), npos))
         {
             agent.energy() -= energy + cost;
             agent_sptr->energy() = energy;
