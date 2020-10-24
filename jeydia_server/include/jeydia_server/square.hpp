@@ -1,6 +1,6 @@
 #pragma once
 
-#include "physics_body.hpp"
+#include "physics_entity.hpp"
 #include <strn/string64.hpp>
 #include <unordered_set>
 #include <memory>

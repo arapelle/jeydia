@@ -1,6 +1,6 @@
 #pragma once
 
-#include "physics_body.hpp"
+#include "physics_entity.hpp"
 #include <cstdint>
 
 namespace jeydia

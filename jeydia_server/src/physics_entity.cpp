@@ -1,4 +1,4 @@
-#include <jeydia_server/physics_body.hpp>
+#include <jeydia_server/physics_entity.hpp>
 #include <stdexcept>
 
 namespace jeydia

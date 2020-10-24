@@ -19,7 +19,7 @@ set(headers
     include/jeydia_server/energy_entity.hpp
     include/jeydia_server/agent.hpp
     include/jeydia_server/physics_types.hpp
-    include/jeydia_server/physics_body.hpp
+    include/jeydia_server/physics_entity.hpp
     include/jeydia_server/application.hpp
     include/jeydia_server/map.hpp
     include/jeydia_server/module.hpp
@@ -35,7 +35,7 @@ set(sources
     src/square.cpp
     src/game_module.cpp
     src/user.cpp
-    src/physics_body.cpp
+    src/physics_entity.cpp
     src/physics_events.cpp
 )
 
