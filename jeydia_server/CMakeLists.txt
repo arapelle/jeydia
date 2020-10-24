@@ -16,6 +16,7 @@ message(STATUS "PROJECT : ${PROJECT_NAME} ${PROJECT_VERSION}")
 set(headers
     include/jeydia_server/square.hpp
     include/jeydia_server/game_module.hpp
+    include/jeydia_server/energy_entity.hpp
     include/jeydia_server/agent.hpp
     include/jeydia_server/physics_types.hpp
     include/jeydia_server/physics_body.hpp
