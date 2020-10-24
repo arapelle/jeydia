@@ -29,7 +29,7 @@ bool Map::place_entity(Physics_body &entity, Position position)
 
     if (contains(position))
     {
-        Square& square = get(position);
+        Physics_square& square = get(position);
         if (entity.is_solid())
         {
             if (square.is_free())
@@ -68,12 +68,12 @@ bool Map::move_entity(Physics_body &entity, Direction dir)
         Position npos = dirn::neighbour(pos, dir, bad_position);
         if (contains(npos))
         {
-            Square& nsquare = get(npos);
+            Physics_square& nsquare = get(npos);
             if (entity.is_solid())
             {
                 if (nsquare.is_free())
                 {
-                    Square& square = get(pos);
+                    Physics_square& square = get(pos);
                     square.remove_solid_body();
                     moved_out_(entity, pos, npos, dir);
                     nsquare.set_solid_body(entity);
@@ -83,7 +83,7 @@ bool Map::move_entity(Physics_body &entity, Direction dir)
             }
             else
             {
-                Square& square = get(pos);
+                Physics_square& square = get(pos);
                 nsquare.add_traversable_body(entity);
                 square.remove_traversable_body(entity);
             }
@@ -96,7 +96,7 @@ bool Map::move_entity(Physics_body &entity, Direction dir)
 void Map::remove_entity(Physics_body &entity)
 {
     Position pos = entity.position();
-    Square& square = get(pos);
+    Physics_square& square = get(pos);
     if (entity.is_solid())
     {
         assert(square.solid_body_ptr() == &entity);
@@ -152,7 +152,7 @@ bool Map::read_ground_from_stream_(std::istream& stream)
         for (uint16_t i = 0; i < width(); ++i)
         {
             char ch = lines[j][i];
-            Square square(Square::ground_from_char(ch));
+            Physics_square square(Physics_square::ground_from_char(ch));
             if (square.is_bad())
             {
                 SPDLOG_ERROR("Square cannot be read: unkwnon character '{}'.", ch);
@@ -189,7 +189,7 @@ bool Map::read_main_from_stream_(std::istream& stream)
         for (uint16_t i = 0; i < width(); ++i)
         {
             char ch = lines[j][i];
-            Square& square = get(i,j);
+            Physics_square& square = get(i,j);
             switch (ch)
             {
             case '$':
@@ -217,7 +217,7 @@ bool Map::read_main_from_stream_(std::istream& stream)
 
 void Map::moved_in_(Physics_body &moving_body, Position source_position, Position target_position, Direction move_dir)
 {
-    Square& target_square = get(target_position);
+    Physics_square& target_square = get(target_position);
     Moved_in_event event(*this, moving_body, nullptr, source_position, target_position, move_dir);
     if (!moving_body.is_solid() && target_square.solid_body_ptr())
     {
@@ -247,7 +247,7 @@ void Map::moved_in_(Physics_body &moving_body, Position source_position, Positio
 
 void Map::moved_out_(Physics_body &moving_body, Position source_position, Position target_position, Direction move_dir)
 {
-    Square& source_square = get(source_position);
+    Physics_square& source_square = get(source_position);
     Moved_out_event event(*this, moving_body, nullptr, source_position, target_position, move_dir);
     if (!moving_body.is_solid() && source_square.solid_body_ptr())
     {

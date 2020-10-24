@@ -1,24 +1,24 @@
-#include <jeydia_server/square.hpp>
+#include <jeydia_server/physics_square.hpp>
 
 namespace jeydia
 {
 
-Square::Square(strn::string64 ground)
+Physics_square::Physics_square(strn::string64 ground)
     : ground_(ground)
 {}
 
-bool Square::is_bad() const
+bool Physics_square::is_bad() const
 {
     return ground_.empty();
 }
 
-bool Square::is_free() const
+bool Physics_square::is_free() const
 {
     return (ground_ == PLAIN || ground_ == VOID)
         && !solid_body_;
 }
 
-strn::string64 Square::ground_from_char(char ch)
+strn::string64 Physics_square::ground_from_char(char ch)
 {
     switch (ch)
     {
@@ -34,7 +34,7 @@ strn::string64 Square::ground_from_char(char ch)
     return BADVALUE;
 }
 
-char Square::ground_to_char(strn::string64 ground)
+char Physics_square::ground_to_char(strn::string64 ground)
 {
     switch (ground.integer())
     {

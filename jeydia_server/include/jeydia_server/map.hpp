@@ -1,7 +1,7 @@
 #pragma once
 
 #include "energy_entity.hpp"
-#include "square.hpp"
+#include "physics_square.hpp"
 #include "physics_events.hpp"
 #include "physics_types.hpp"
 #include <grid/grid.hpp>
@@ -14,10 +14,10 @@
 namespace jeydia
 {
 
-class Map : public grid::grid<Square>
+class Map : public grid::grid<Physics_square>
 {
 private:
-    using Base_ = ::grid::grid<Square>;
+    using Base_ = ::grid::grid<Physics_square>;
 
 public:
     using Base_::Base_;
@@ -42,7 +42,6 @@ private:
 private:
     std::shared_ptr<spdlog::logger> logger_;
     evnt::event_manager* event_manager_ = nullptr;
-    std::unordered_set<std::unique_ptr<Energy_entity>> energies_;
 };
 
 template <class Output_stream>
@@ -54,7 +53,7 @@ Output_stream& operator<<(Output_stream& stream, const Map& map)
     {
         for (uint16_t i = 0; i < map.width(); ++i)
         {
-            stream << Square::ground_to_char(map.get(i,j).ground());
+            stream << Physics_square::ground_to_char(map.get(i,j).ground());
         }
         stream << '\n';
     }
@@ -63,7 +62,7 @@ Output_stream& operator<<(Output_stream& stream, const Map& map)
     {
         for (uint16_t i = 0; i < map.width(); ++i)
         {
-            const Square& sq = map.get(i,j);
+            const Physics_square& sq = map.get(i,j);
             if (sq.solid_body_ptr())
                 stream << '@';
             else if (!sq.traversable_bodies().empty())

@@ -10,7 +10,7 @@ namespace jeydia
 
 using namespace strn::literals;
 
-class Square
+class Physics_square
 {
 public:
     inline constexpr static strn::string64 VOID = "VOID"_s64;
@@ -20,7 +20,7 @@ public:
     inline constexpr static strn::string64 BADVALUE = "BADVALUE"_s64;
 
 public:
-    Square(strn::string64 ground = PLAIN);
+    Physics_square(strn::string64 ground = PLAIN);
     bool is_bad() const;
     bool is_free() const;
     inline const strn::string64& ground() const { return ground_; }

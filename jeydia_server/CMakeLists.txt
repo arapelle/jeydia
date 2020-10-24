@@ -14,7 +14,7 @@ message(STATUS "PROJECT : ${PROJECT_NAME} ${PROJECT_VERSION}")
 
 # Headers:
 set(headers
-    include/jeydia_server/square.hpp
+    include/jeydia_server/physics_square.hpp
     include/jeydia_server/game_module.hpp
     include/jeydia_server/energy_entity.hpp
     include/jeydia_server/agent.hpp
@@ -33,7 +33,7 @@ set(sources
     src/application.cpp
     src/map.cpp
     src/main.cpp
-    src/square.cpp
+    src/physics_square.cpp
     src/game_module.cpp
     src/user.cpp
     src/physics_entity.cpp
