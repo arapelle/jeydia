@@ -1,38 +1,64 @@
 #include <jeydia_server/map.hpp>
 #include <jeydia_server/agent.hpp>
+#include <jeydia_server/energy_entity.hpp>
 #include <jeydia_server/game_module.hpp>
 #include <inis/inis.hpp>
 #include <dirn/neighbourhood.hpp>
 #include <spdlog/spdlog.h>
 #include <iostream>
+#include <cassert>
 
 namespace jeydia
 {
 
-void Map::set_game_module(Game_module& module)
+Move_event::Move_event(Map& map, Physics_body &first_body, Physics_body &second_body,
+                       Position source_position, Position target_position,
+                       Direction move_dir)
+    : map_(&map), first_body_(&first_body), second_body_(&second_body), source_position_(source_position),
+      target_position_(target_position), move_dir_(move_dir)
+{}
+
+Move_event::Move_event(Map &map, Physics_body &first_body, std::nullptr_t,
+                       Position source_position, Position target_position,
+                       Direction move_dir)
+    : map_(&map), first_body_(&first_body), second_body_(nullptr), source_position_(source_position),
+      target_position_(target_position), move_dir_(move_dir)
+{}
+
+void Map::set_program_tools(std::shared_ptr<spdlog::logger> logger, evnt::event_manager& event_manager)
 {
-    if (game_module_)
-        throw std::runtime_error("This map is already linked to a game module.");
-    game_module_ = &module;
+    logger_ = std::move(logger);
+    event_manager_ = &event_manager;
 }
 
-bool Map::place_agent(Agent& agent, Position position)
+bool Map::place_entity(Physics_body &entity, Position position)
 {
-    if (!game_module_)
-        throw std::runtime_error("This map must be linked to a game module.");
-    if (agent.position() != bad_position)
+    if (!are_program_tools_set())
+        throw std::runtime_error("Program tools must be set.");
+    if (entity.position() != bad_position)
     {
-        SPDLOG_LOGGER_ERROR(game_module_->logger(), "The agent has already a position.");
+        SPDLOG_LOGGER_ERROR(logger_, "The agent has already a position.");
         return false;
     }
 
     if (contains(position))
     {
         Square& square = get(position);
-        if (square.is_free())
+        if (entity.is_solid())
         {
-            square.set_main(agent.name());
-            agent.position() = position;
+            if (square.is_free())
+            {
+                square.set_solid_body(entity);
+                entity.mutable_position() = position;
+                moved_in_(entity, bad_position, position, Cartographic_directions::bad_direction);
+                return true;
+            }
+        }
+        else
+        {
+            square.add_traversable_body(entity);
+            entity.mutable_position() = position;
+            moved_in_(entity, bad_position, position, Cartographic_directions::bad_direction);
             return true;
         }
     }
@@ -40,35 +66,59 @@ bool Map::place_agent(Agent& agent, Position position)
     return false;
 }
 
-bool Map::move_agent(Agent& agent, dirn::direction4 dir)
+bool Map::move_entity(Physics_body &entity, Direction dir)
 {
-    if (!game_module_)
-        throw std::runtime_error("This map must be linked to a game module.");
-    if (agent.position() == bad_position)
+    if (!are_program_tools_set())
+        throw std::runtime_error("Program tools must be set.");
+    if (entity.position() == bad_position)
     {
-        SPDLOG_LOGGER_ERROR(game_module_->logger(), "The agent is not placed on this map.");
+        SPDLOG_LOGGER_ERROR(logger_, "The agent is not placed on this map.");
         return false;
     }
 
     if (dir.is_valid())
     {
-        Position pos = agent.position();
+        Position pos = entity.position();
         Position npos = dirn::neighbour(pos, dir, bad_position);
         if (contains(npos))
         {
             Square& nsquare = get(npos);
-            if (nsquare.is_free())
+            if (entity.is_solid())
             {
-                if (nsquare.main() == Square::ENERGY)
-                    ++agent.energy();
+                if (nsquare.is_free())
+                {
+                    Square& square = get(pos);
+                    square.remove_solid_body();
+                    moved_out_(entity, pos, npos, dir);
+                    nsquare.set_solid_body(entity);
+                    moved_in_(entity, pos, npos, dir);
+                    return true;
+                }
+            }
+            else
+            {
                 Square& square = get(pos);
-                nsquare.set_main(square.main());
-                square.set_main(Square::EMPTY);
+                nsquare.add_traversable_body(entity);
+                square.remove_traversable_body(entity);
             }
         }
     }
 
     return false;
+}
+
+void Map::remove_entity(Physics_body& entity)
+{
+    Position pos = entity.position();
+    Square& square = get(pos);
+    if (entity.is_solid())
+    {
+        assert(square.solid_body_ptr() == &entity);
+        square.remove_solid_body();
+    }
+    else
+        square.remove_traversable_body(entity);
+    moved_out_(entity, pos, bad_position, Cartographic_directions::bad_direction);
 }
 
 bool Map::read_from_file(const std::filesystem::path& filepath)
@@ -154,9 +204,22 @@ bool Map::read_main_from_stream_(std::istream& stream)
         {
             char ch = lines[j][i];
             Square& square = get(i,j);
-            square.set_main(Square::main_from_char(ch));
-            if (square.is_bad())
+            switch (ch)
             {
+            case '$':
+            {
+//                std::unique_ptr energy_uptr = std::make_unique<Energy_entity>(*game_module_);
+//                Energy_entity& energy_ref = *energy_uptr;
+//                energies_.insert(std::move(energy_uptr));
+//                square.add_traversable_body(energy_ref);
+                break;
+            }
+            case 'o':
+                break;
+            case '.':
+            case ' ':
+                break;
+            default:
                 SPDLOG_ERROR("Square cannot be read: unkwnon character '{}'.", ch);
                 return false;
             }
@@ -164,6 +227,66 @@ bool Map::read_main_from_stream_(std::istream& stream)
     }
 
     return true;
+}
+
+void Map::moved_in_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir)
+{
+    Square& target_square = get(target_position);
+    Moved_in_event event(*this, moving_body, nullptr, source_position, target_position, move_dir);
+    if (!moving_body.is_solid() && target_square.solid_body_ptr())
+    {
+        event.set_second_body(*target_square.solid_body_ptr());
+        event_manager_->emit<Moved_in_event>(event);
+        for (auto iter = target_square.traversable_bodies_begin();
+             event.is_valid() && iter != target_square.traversable_bodies_end();)
+        {
+            event.set_second_body(**(iter++));
+            event_manager_->emit<Moved_in_event>(event);
+        }
+    }
+    else
+    {
+        for (auto iter = target_square.traversable_bodies_begin();
+             event.is_valid() && iter != target_square.traversable_bodies_end();)
+        {
+            Physics_body* second_body_ptr = *(iter++);
+            if (second_body_ptr != &moving_body)
+            {
+                event.set_second_body(*second_body_ptr);
+                event_manager_->emit<Moved_in_event>(event);
+            }
+        }
+    }
+}
+
+void Map::moved_out_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir)
+{
+    Square& source_square = get(source_position);
+    Moved_out_event event(*this, moving_body, nullptr, source_position, target_position, move_dir);
+    if (!moving_body.is_solid() && source_square.solid_body_ptr())
+    {
+        event.set_second_body(*source_square.solid_body_ptr());
+        event_manager_->emit<Moved_out_event>(event);
+        for (auto iter = source_square.traversable_bodies_begin();
+             event.is_valid() && iter != source_square.traversable_bodies_end();)
+        {
+            event.set_second_body(**(iter++));
+            event_manager_->emit<Moved_out_event>(event);
+        }
+    }
+    else
+    {
+        for (auto iter = source_square.traversable_bodies_begin();
+             event.is_valid() && iter != source_square.traversable_bodies_end();)
+        {
+            Physics_body* second_body_ptr = *(iter++);
+            if (second_body_ptr != &moving_body)
+            {
+                event.set_second_body(*second_body_ptr);
+                event_manager_->emit<Moved_out_event>(event);
+            }
+        }
+    }
 }
 
 }
