@@ -4,7 +4,7 @@
 namespace jeydia
 {
 
-void Physics_body::set_solid(bool solid)
+void Physics_entity::set_solid(bool solid)
 {
     if (!is_placed()) [[likely]]
         solid_ = solid;

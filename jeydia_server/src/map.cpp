@@ -11,14 +11,14 @@
 namespace jeydia
 {
 
-Move_event::Move_event(Map& map, Physics_body &first_body, Physics_body &second_body,
+Move_event::Move_event(Map& map, Physics_entity &first_body, Physics_entity &second_body,
                        Position source_position, Position target_position,
                        Direction move_dir)
     : map_(&map), first_body_(&first_body), second_body_(&second_body), source_position_(source_position),
       target_position_(target_position), move_dir_(move_dir)
 {}
 
-Move_event::Move_event(Map &map, Physics_body &first_body, std::nullptr_t,
+Move_event::Move_event(Map &map, Physics_entity &first_body, std::nullptr_t,
                        Position source_position, Position target_position,
                        Direction move_dir)
     : map_(&map), first_body_(&first_body), second_body_(nullptr), source_position_(source_position),
@@ -31,7 +31,7 @@ void Map::set_program_tools(std::shared_ptr<spdlog::logger> logger, evnt::event_
     event_manager_ = &event_manager;
 }
 
-bool Map::place_entity(Physics_body &entity, Position position)
+bool Map::place_entity(Physics_entity &entity, Position position)
 {
     if (!are_program_tools_set())
         throw std::runtime_error("Program tools must be set.");
@@ -66,7 +66,7 @@ bool Map::place_entity(Physics_body &entity, Position position)
     return false;
 }
 
-bool Map::move_entity(Physics_body &entity, Direction dir)
+bool Map::move_entity(Physics_entity &entity, Direction dir)
 {
     if (!are_program_tools_set())
         throw std::runtime_error("Program tools must be set.");
@@ -107,7 +107,7 @@ bool Map::move_entity(Physics_body &entity, Direction dir)
     return false;
 }
 
-void Map::remove_entity(Physics_body& entity)
+void Map::remove_entity(Physics_entity& entity)
 {
     Position pos = entity.position();
     Square& square = get(pos);
@@ -229,7 +229,7 @@ bool Map::read_main_from_stream_(std::istream& stream)
     return true;
 }
 
-void Map::moved_in_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir)
+void Map::moved_in_(Physics_entity& moving_body, Position source_position, Position target_position, Direction move_dir)
 {
     Square& target_square = get(target_position);
     Moved_in_event event(*this, moving_body, nullptr, source_position, target_position, move_dir);
@@ -249,7 +249,7 @@ void Map::moved_in_(Physics_body& moving_body, Position source_position, Positio
         for (auto iter = target_square.traversable_bodies_begin();
              event.is_valid() && iter != target_square.traversable_bodies_end();)
         {
-            Physics_body* second_body_ptr = *(iter++);
+            Physics_entity* second_body_ptr = *(iter++);
             if (second_body_ptr != &moving_body)
             {
                 event.set_second_body(*second_body_ptr);
@@ -259,7 +259,7 @@ void Map::moved_in_(Physics_body& moving_body, Position source_position, Positio
     }
 }
 
-void Map::moved_out_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir)
+void Map::moved_out_(Physics_entity& moving_body, Position source_position, Position target_position, Direction move_dir)
 {
     Square& source_square = get(source_position);
     Moved_out_event event(*this, moving_body, nullptr, source_position, target_position, move_dir);
@@ -279,7 +279,7 @@ void Map::moved_out_(Physics_body& moving_body, Position source_position, Positi
         for (auto iter = source_square.traversable_bodies_begin();
              event.is_valid() && iter != source_square.traversable_bodies_end();)
         {
-            Physics_body* second_body_ptr = *(iter++);
+            Physics_entity* second_body_ptr = *(iter++);
             if (second_body_ptr != &moving_body)
             {
                 event.set_second_body(*second_body_ptr);

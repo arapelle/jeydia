@@ -7,7 +7,7 @@ namespace jeydia
 {
 
 Agent::Agent(Agent_id name, User& user, Game_module& game_module, int16_t energy)
-    : Physics_body(game_module), name_(name), user_(&user), energy_(energy)
+    : Physics_entity(game_module), name_(name), user_(&user), energy_(energy)
 {}
 
 //----

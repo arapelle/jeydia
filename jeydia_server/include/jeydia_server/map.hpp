@@ -20,19 +20,19 @@ class Map;
 class Move_event
 {
 public:
-    Move_event(Map& map, Physics_body& first_body, Physics_body& second_body,
+    Move_event(Map& map, Physics_entity& first_body, Physics_entity& second_body,
                Position source_position, Position target_position,
                Direction move_dir);
-    Move_event(Map& map, Physics_body& first_body, std::nullptr_t,
+    Move_event(Map& map, Physics_entity& first_body, std::nullptr_t,
                Position source_position, Position target_position,
                Direction move_dir);
     inline const Map& map() const { return *map_; }
     inline Map& map() { return *map_; }
-    inline const Physics_body& first_body() const { return *first_body_; }
-    inline Physics_body& first_body() { return *first_body_; }
-    inline const Physics_body& second_body() const { return *second_body_; }
-    inline Physics_body& second_body() { return *second_body_; }
-    inline void set_second_body(Physics_body& body) { second_body_ = &body; }
+    inline const Physics_entity& first_body() const { return *first_body_; }
+    inline Physics_entity& first_body() { return *first_body_; }
+    inline const Physics_entity& second_body() const { return *second_body_; }
+    inline Physics_entity& second_body() { return *second_body_; }
+    inline void set_second_body(Physics_entity& body) { second_body_ = &body; }
     inline Position source_position() { return source_position_; }
     inline Position target_position() { return target_position_; }
     inline Direction move_dir() const { return move_dir_; }
@@ -41,8 +41,8 @@ public:
 
 private:
     Map* map_ = nullptr;
-    Physics_body* first_body_;
-    Physics_body* second_body_;
+    Physics_entity* first_body_;
+    Physics_entity* second_body_;
     Position source_position_;
     Position target_position_;
     Direction move_dir_;
@@ -71,9 +71,9 @@ public:
 
     void set_program_tools(std::shared_ptr<spdlog::logger> logger, evnt::event_manager& event_manager);
     inline bool are_program_tools_set() const { return logger_ && event_manager_; }
-    bool place_entity(Physics_body& entity, Position position);
-    bool move_entity(Physics_body& entity, Direction dir);
-    void remove_entity(Physics_body& entity);
+    bool place_entity(Physics_entity& entity, Position position);
+    bool move_entity(Physics_entity& entity, Direction dir);
+    void remove_entity(Physics_entity& entity);
 
     bool read_from_file(const std::filesystem::path& filepath);
 
@@ -82,8 +82,8 @@ private:
     bool read_main_from_stream_(std::istream& stream);
 
 private:
-    void moved_in_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir);
-    void moved_out_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir);
+    void moved_in_(Physics_entity& moving_body, Position source_position, Position target_position, Direction move_dir);
+    void moved_out_(Physics_entity& moving_body, Position source_position, Position target_position, Direction move_dir);
 
 private:
     std::shared_ptr<spdlog::logger> logger_;

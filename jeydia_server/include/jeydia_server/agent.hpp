@@ -12,7 +12,7 @@ class User;
 
 using Agent_id = strn::string64;
 
-class Agent : public Physics_body
+class Agent : public Physics_entity
 {
 public:
     Agent(Agent_id name, User& user, Game_module& game_module, int16_t energy = 0);

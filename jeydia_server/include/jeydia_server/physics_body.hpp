@@ -8,11 +8,11 @@ namespace jeydia
 
 class Map;
 
-class Physics_body : public Game_entity
+class Physics_entity : public Game_entity
 {
 public:
     using Game_entity::Game_entity;
-    virtual ~Physics_body() = default;
+    virtual ~Physics_entity() = default;
     inline bool is_solid() const { return solid_; }
     inline bool is_pushable() const { return pushable_; }
     inline const Position& position() const { return position_; }
