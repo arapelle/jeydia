@@ -1,6 +1,6 @@
 #pragma once
 
-#include "map_types.hpp"
+#include "physics_body.hpp"
 #include <strn/string64.hpp>
 #include <dirn/cartographic_directions4.hpp>
 
@@ -12,7 +12,7 @@ class User;
 
 using Agent_id = strn::string64;
 
-class Agent
+class Agent : public Physics_body
 {
 public:
     Agent(Agent_id name, User& user, Game_module& game_module, int16_t energy = 0);
@@ -20,10 +20,6 @@ public:
     inline void set_name(Agent_id name) { name_ = name; }
     inline const User& user() const { return *user_; }
     inline User& user() { return *user_; }
-    inline const Game_module& game_module() const { return *game_module_; }
-    inline Game_module& game_module() { return *game_module_; }
-    inline const Position& position() const { return position_; }
-    inline Position& position() { return position_; }
     inline const int16_t& energy() const { return energy_; }
     inline int16_t& energy() { return energy_; }
     inline void set_energy(int16_t energy) { energy_ = energy; }
@@ -32,8 +28,6 @@ public:
 private:
     Agent_id name_;
     User* user_ = nullptr;
-    Game_module* game_module_ = nullptr;
-    Position position_ = bad_position;
     int16_t energy_ = 0;
 };
 

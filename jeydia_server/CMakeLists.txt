@@ -16,6 +16,9 @@ message(STATUS "PROJECT : ${PROJECT_NAME} ${PROJECT_VERSION}")
 set(headers
     include/jeydia_server/square.hpp
     include/jeydia_server/game_module.hpp
+    include/jeydia_server/agent.hpp
+    include/jeydia_server/physics_types.hpp
+    include/jeydia_server/physics_body.hpp
     include/jeydia_server/application.hpp
     include/jeydia_server/map.hpp
     include/jeydia_server/module.hpp
@@ -31,6 +34,7 @@ set(sources
     src/square.cpp
     src/game_module.cpp
     src/user.cpp
+    src/physics_body.cpp
 )
 
 # Add C++ library
