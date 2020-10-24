@@ -151,14 +151,14 @@ bool Map::read_ground_from_stream_(std::istream& stream)
     {
         for (uint16_t i = 0; i < width(); ++i)
         {
-            char ch = lines[j][i];
-            Physics_square square(Physics_square::ground_from_char(ch));
-            if (square.is_bad())
-            {
-                SPDLOG_ERROR("Square cannot be read: unkwnon character '{}'.", ch);
-                return false;
-            }
-            get(i,j) = std::move(square);
+//            char ch = lines[j][i];
+//            Physics_square square(Physics_square::ground_from_char(ch));
+//            if (square.is_bad())
+//            {
+//                SPDLOG_ERROR("Square cannot be read: unkwnon character '{}'.", ch);
+//                return false;
+//            }
+//            get(i,j) = std::move(square);
         }
     }
 

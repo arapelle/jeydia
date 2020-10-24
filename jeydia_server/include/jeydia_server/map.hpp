@@ -53,7 +53,7 @@ Output_stream& operator<<(Output_stream& stream, const Map& map)
     {
         for (uint16_t i = 0; i < map.width(); ++i)
         {
-            stream << Physics_square::ground_to_char(map.get(i,j).ground());
+//            stream << Physics_square::ground_to_char(map.get(i,j).ground());
         }
         stream << '\n';
     }
@@ -62,13 +62,13 @@ Output_stream& operator<<(Output_stream& stream, const Map& map)
     {
         for (uint16_t i = 0; i < map.width(); ++i)
         {
-            const Physics_square& sq = map.get(i,j);
-            if (sq.solid_body_ptr())
-                stream << '@';
-            else if (!sq.traversable_bodies().empty())
-                stream << '~';
-            else
-                stream << '.';
+//            const Physics_square& sq = map.get(i,j);
+//            if (sq.solid_body_ptr())
+//                stream << '@';
+//            else if (!sq.traversable_bodies().empty())
+//                stream << '~';
+//            else
+//                stream << '.';
         }
         stream << '\n';
     }
