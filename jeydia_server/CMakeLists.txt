@@ -42,7 +42,7 @@ add_cpp_executable(${PROJECT_NAME}
     SOURCES ${sources}
     )
 
-find_package(arba 0.17 CONFIG REQUIRED)
+find_package(arba 0.18 CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC arba::arba)
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME})
