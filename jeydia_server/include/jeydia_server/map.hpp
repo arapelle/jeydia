@@ -25,9 +25,9 @@ public:
     inline bool are_program_tools_set() const { return logger_ && event_manager_; }
     void set_program_tools(std::shared_ptr<spdlog::logger> logger, evnt::event_manager& event_manager);
 
-    bool place_entity(Physics_body& entity, Position position);
-    bool move_entity(Physics_body& entity, Direction dir);
-    void remove_entity(Physics_body& entity);
+    bool place_body(Physics_body& body, Position position);
+    bool move_body(Physics_body& body, Direction dir);
+    void remove_body(Physics_body& body);
 
     bool read_from_file(const std::filesystem::path& filepath);
 

@@ -47,7 +47,7 @@ void Game_module::receive(Moved_out_event& event)
 void Game_module::agent_absorbs_energy_(Moved_in_event& event, Agent& agent, Energy_entity& energy)
 {
     agent.energy() += energy.count();
-    map_.remove_entity(energy.physics_body());
+    map_.remove_body(energy.physics_body());
 }
 
 void Game_module::read_map_from_file_()

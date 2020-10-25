@@ -24,7 +24,7 @@ Physics_entity::Physics_entity(Game_module& module)
 Physics_entity::~Physics_entity()
 {
     if (is_placed())
-        game_module().map().remove_entity(physics_body_);
+        game_module().map().remove_body(physics_body_);
 }
 
 }

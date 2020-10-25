@@ -17,11 +17,11 @@ void Map::set_program_tools(std::shared_ptr<spdlog::logger> logger, evnt::event_
     event_manager_ = &event_manager;
 }
 
-bool Map::place_entity(Physics_body &entity, Position position)
+bool Map::place_body(Physics_body &body, Position position)
 {
     if (!are_program_tools_set())
         throw std::runtime_error("Program tools must be set.");
-    if (entity.position() != bad_position)
+    if (body.position() != bad_position)
     {
         SPDLOG_LOGGER_ERROR(logger_, "The agent has already a position.");
         return false;
@@ -30,21 +30,21 @@ bool Map::place_entity(Physics_body &entity, Position position)
     if (contains(position))
     {
         Physics_square& square = get(position);
-        if (entity.is_solid())
+        if (body.is_solid())
         {
             if (square.is_free())
             {
-                square.set_solid_body(entity);
-                entity.mutable_position() = position;
-                moved_in_(entity, bad_position, position, Cartographic_directions::bad_direction);
+                square.set_solid_body(body);
+                body.mutable_position() = position;
+                moved_in_(body, bad_position, position, Cartographic_directions::bad_direction);
                 return true;
             }
         }
         else
         {
-            square.add_traversable_body(entity);
-            entity.mutable_position() = position;
-            moved_in_(entity, bad_position, position, Cartographic_directions::bad_direction);
+            square.add_traversable_body(body);
+            body.mutable_position() = position;
+            moved_in_(body, bad_position, position, Cartographic_directions::bad_direction);
             return true;
         }
     }
@@ -52,11 +52,11 @@ bool Map::place_entity(Physics_body &entity, Position position)
     return false;
 }
 
-bool Map::move_entity(Physics_body &entity, Direction dir)
+bool Map::move_body(Physics_body &body, Direction dir)
 {
     if (!are_program_tools_set())
         throw std::runtime_error("Program tools must be set.");
-    if (entity.position() == bad_position)
+    if (body.position() == bad_position)
     {
         SPDLOG_LOGGER_ERROR(logger_, "The agent is not placed on this map.");
         return false;
@@ -64,28 +64,28 @@ bool Map::move_entity(Physics_body &entity, Direction dir)
 
     if (dir.is_valid())
     {
-        Position pos = entity.position();
+        Position pos = body.position();
         Position npos = dirn::neighbour(pos, dir, bad_position);
         if (contains(npos))
         {
             Physics_square& nsquare = get(npos);
-            if (entity.is_solid())
+            if (body.is_solid())
             {
                 if (nsquare.is_free())
                 {
                     Physics_square& square = get(pos);
                     square.remove_solid_body();
-                    moved_out_(entity, pos, npos, dir);
-                    nsquare.set_solid_body(entity);
-                    moved_in_(entity, pos, npos, dir);
+                    moved_out_(body, pos, npos, dir);
+                    nsquare.set_solid_body(body);
+                    moved_in_(body, pos, npos, dir);
                     return true;
                 }
             }
             else
             {
                 Physics_square& square = get(pos);
-                nsquare.add_traversable_body(entity);
-                square.remove_traversable_body(entity);
+                nsquare.add_traversable_body(body);
+                square.remove_traversable_body(body);
             }
         }
     }
@@ -93,18 +93,18 @@ bool Map::move_entity(Physics_body &entity, Direction dir)
     return false;
 }
 
-void Map::remove_entity(Physics_body &entity)
+void Map::remove_body(Physics_body &body)
 {
-    Position pos = entity.position();
+    Position pos = body.position();
     Physics_square& square = get(pos);
-    if (entity.is_solid())
+    if (body.is_solid())
     {
-        assert(square.solid_body_ptr() == &entity);
+        assert(square.solid_body_ptr() == &body);
         square.remove_solid_body();
     }
     else
-        square.remove_traversable_body(entity);
-    moved_out_(entity, pos, bad_position, Cartographic_directions::bad_direction);
+        square.remove_traversable_body(body);
+    moved_out_(body, pos, bad_position, Cartographic_directions::bad_direction);
 }
 
 bool Map::read_from_file(const std::filesystem::path& filepath)
