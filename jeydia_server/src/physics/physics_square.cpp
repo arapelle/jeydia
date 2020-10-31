@@ -1,4 +1,4 @@
-#include <jeydia_server/physics_square.hpp>
+#include <jeydia_server/physics/physics_square.hpp>
 
 namespace jeydia
 {

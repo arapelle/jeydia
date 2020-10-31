@@ -3,7 +3,6 @@
 #endif
 #include <jeydia_server/game_module.hpp>
 #include <jeydia_server/application.hpp>
-#include <jeydia_server/physics_square.hpp>
 
 namespace jeydia
 {

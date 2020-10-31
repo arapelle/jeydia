@@ -1,6 +1,5 @@
 #pragma once
 
-#include "energy_entity.hpp"
 #include "physics_square.hpp"
 #include "physics_events.hpp"
 #include "physics_types.hpp"

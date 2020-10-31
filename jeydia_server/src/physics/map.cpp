@@ -1,4 +1,4 @@
-#include <jeydia_server/map.hpp>
+#include <jeydia_server/physics/map.hpp>
 #include <jeydia_server/agent.hpp>
 #include <jeydia_server/energy_entity.hpp>
 #include <jeydia_server/game_module.hpp>

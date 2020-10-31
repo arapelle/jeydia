@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game_entity.hpp"
-#include "physics_body.hpp"
+#include "physics/physics_body.hpp"
 
 namespace jeydia
 {

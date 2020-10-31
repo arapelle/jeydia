@@ -14,32 +14,34 @@ message(STATUS "PROJECT : ${PROJECT_NAME} ${PROJECT_VERSION}")
 
 # Headers:
 set(headers
-    include/jeydia_server/physics_square.hpp
+    include/jeydia_server/physics/physics_events.hpp
+    include/jeydia_server/physics/physics_square.hpp
+    include/jeydia_server/physics/physics_types.hpp
+    include/jeydia_server/physics/physics_body.hpp
+    include/jeydia_server/physics/map.hpp
     include/jeydia_server/game_module.hpp
     include/jeydia_server/energy_entity.hpp
     include/jeydia_server/agent.hpp
-    include/jeydia_server/physics_types.hpp
-    include/jeydia_server/physics_entity.hpp
-    include/jeydia_server/physics_body.hpp
+    include/jeydia_server/game_entity.hpp
     include/jeydia_server/application.hpp
-    include/jeydia_server/map.hpp
     include/jeydia_server/module.hpp
     include/jeydia_server/user.hpp
+    include/jeydia_server/physics_entity.hpp
 )
 
 # Sources:
 set(sources
-    src/agent.cpp
-    src/application.cpp
-    src/map.cpp
+    src/physics/map.cpp
+    src/physics/physics_square.cpp
+    src/physics/physics_body.cpp
+    src/physics/physics_events.cpp
     src/main.cpp
-    src/physics_square.cpp
-    src/game_module.cpp
-    src/user.cpp
     src/physics_entity.cpp
-    src/physics_events.cpp
-    src/physics_body.cpp
+    src/game_module.cpp
     src/game_entity.cpp
+    src/application.cpp
+    src/user.cpp
+    src/agent.cpp
 )
 
 # Add C++ library

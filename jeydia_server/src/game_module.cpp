@@ -1,4 +1,5 @@
 #include <jeydia_server/game_module.hpp>
+#include <jeydia_server/energy_entity.hpp>
 #include <iostream>
 
 namespace jeydia

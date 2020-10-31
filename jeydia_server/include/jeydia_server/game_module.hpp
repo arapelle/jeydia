@@ -1,12 +1,14 @@
 #pragma once
 
-#include "map.hpp"
+#include "physics/map.hpp"
 #include "module.hpp"
 #include <evnt/event_listener.hpp>
 #include <wgen/default_syllabary.hpp>
 
 namespace jeydia
 {
+
+class Energy_entity;
 
 class Game_module : public Loop_module<Game_module>,
                     public evnt::event_listener<Overlap_began_event, Overlap_ended_event>
