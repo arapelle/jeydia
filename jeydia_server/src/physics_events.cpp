@@ -17,4 +17,10 @@ Move_event::Move_event(Map &map, Physics_body &first_body, std::nullptr_t,
       target_position_(target_position), move_dir_(move_dir)
 {}
 
+Out_of_physics_world_event::Out_of_physics_world_event(Map& map, Physics_body& body, Position out_position)
+    : map_(&map), body_(&body), out_position_(out_position)
+{}
+
+//------
+
 }

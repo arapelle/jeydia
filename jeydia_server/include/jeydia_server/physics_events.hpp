@@ -50,4 +50,29 @@ public:
     using Move_event::Move_event;
 };
 
+class Hit_event : public Move_event
+{
+public:
+    using Move_event::Move_event;
+};
+
+class Out_of_physics_world_event
+{
+public:
+    Out_of_physics_world_event(Map& map, Physics_body& body, Position out_position);
+    inline const Map& map() const { return *map_; }
+    inline Map& map() { return *map_; }
+    inline const Physics_body& body() const { return *body_; }
+    inline Physics_body& body() { return *body_; }
+    inline Position out_position() { return out_position_; }
+    inline bool is_valid() const { return valid_; }
+    inline void invalidate() { valid_ = false; }
+
+private:
+    Map* map_ = nullptr;
+    Physics_body* body_;
+    Position out_position_;
+    bool valid_ = false;
+};
+
 }
