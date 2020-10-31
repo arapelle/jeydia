@@ -39,6 +39,7 @@ set(sources
     src/physics_entity.cpp
     src/physics_events.cpp
     src/physics_body.cpp
+    src/game_entity.cpp
 )
 
 # Add C++ library

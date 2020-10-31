@@ -15,7 +15,7 @@ using Agent_id = strn::string64;
 class Agent : public Physics_entity
 {
 public:
-    Agent(Agent_id name, User& user, Game_module& game_module, int16_t energy = 0);
+    Agent(Agent_id name, User& user, int16_t energy = 0);
     inline const Agent_id& name() const { return name_; }
     inline void set_name(Agent_id name) { name_ = name; }
     inline const User& user() const { return *user_; }

@@ -3,18 +3,21 @@
 namespace jeydia
 {
 
+class Application;
 class Game_module;
 
 class Game_entity
 {
 public:
-    explicit Game_entity(Game_module& module) : game_module_(&module) {}
+    explicit Game_entity(Application& app) : app_(&app) {}
     virtual ~Game_entity() = default;
-    inline const Game_module& game_module() const { return *game_module_; }
-    inline Game_module& game_module() { return *game_module_; }
+    inline const Application& app() const { return *app_; }
+    inline Application& app() { return *app_; }
+    const Game_module& game_module() const;
+    Game_module& game_module();
 
 private:
-    Game_module* game_module_ = nullptr;
+    Application* app_ = nullptr;
 };
 
 }

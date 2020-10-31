@@ -9,7 +9,7 @@ namespace jeydia
 class Physics_entity : public Game_entity
 {
 public:
-    explicit Physics_entity(Game_module& module);
+    explicit Physics_entity(Application& app);
     virtual ~Physics_entity();
     inline const Physics_body& physics_body() const { return physics_body_; }
     inline Physics_body& physics_body() { return physics_body_; }

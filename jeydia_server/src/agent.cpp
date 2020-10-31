@@ -6,8 +6,8 @@
 namespace jeydia
 {
 
-Agent::Agent(Agent_id name, User& user, Game_module& game_module, int16_t energy)
-    : Physics_entity(game_module), name_(name), user_(&user), energy_(energy)
+Agent::Agent(Agent_id name, User& user, int16_t energy)
+    : Physics_entity(user.app()), name_(name), user_(&user), energy_(energy)
 {}
 
 //----
@@ -52,7 +52,7 @@ bool Split_action::execute(Agent& agent) const
         Map& map = game_module.map();
         User& user = agent.user();
         Position npos = dirn::neighbour(agent.position(), dir, bad_position);
-        std::shared_ptr agent_sptr = user.create_agent(game_module);
+        std::shared_ptr agent_sptr = user.create_agent();
         if (map.place_body(agent_sptr->physics_body(), npos))
         {
             agent.energy() -= energy + cost;

@@ -15,8 +15,8 @@ void Physics_body::set_solid(bool solid)
 
 //------
 
-Physics_entity::Physics_entity(Game_module& module)
-    : Game_entity(module)
+Physics_entity::Physics_entity(Application& app)
+    : Game_entity(app)
 {
     physics_body_.set_user_data(this);
 }
