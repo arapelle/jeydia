@@ -10,8 +10,7 @@ bool Physics_square::is_bad() const
 
 bool Physics_square::is_free() const
 {
-    return ground_->is_solid()
-        && !solid_body_;
+    return !solid_body_;
 }
 
 strn::string64 Physics_square::ground_from_char(char ch)
