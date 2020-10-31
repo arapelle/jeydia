@@ -27,7 +27,8 @@ public:
 
     bool place_body(Physics_body& body, Position position);
     bool move_body(Physics_body& body, Direction dir);
-    void remove_body(Physics_body& body);
+    bool remove_body(Physics_body& body);
+    void apply_gravity();
 
     bool read_from_file(const std::filesystem::path& filepath);
 
@@ -36,8 +37,24 @@ private:
     bool read_main_from_stream_(std::istream& stream);
 
 private:
-    void moved_in_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir);
-    void moved_out_(Physics_body& moving_body, Position source_position, Position target_position, Direction move_dir);
+    bool move_body_(Physics_body& body, Direction dir, uint8_t force);
+    void move_solid_body_(Physics_body& body, Physics_square& square, Physics_square& nsquare,
+                          Position pos, Position npos, Direction dir);
+    void move_traversable_body_(Physics_body& body, Physics_square& square, Physics_square& nsquare,
+                                Position pos, Position npos, Direction dir);
+    bool treat_move_collision_(Physics_body& body, Physics_body& nbody, Physics_square& nsquare,
+                               Position pos, Position npos, Direction dir, uint8_t force);
+    void apply_gravity_(Physics_body& body, Physics_square& square);
+
+private:
+    void emit_traversable_body_moved_in_(Physics_body& moving_body, Position source_position, Position target_position,
+                                         Direction move_dir);
+    void emit_solid_body_moved_in_(Physics_body& moving_body, Position source_position, Position target_position,
+                                   Direction move_dir);
+    void emit_traversable_body_moved_out_(Physics_body& moving_body, Position source_position, Position target_position,
+                                          Direction move_dir);
+    void emit_solid_body_moved_out_(Physics_body& moving_body, Position source_position, Position target_position,
+                                    Direction move_dir);
 
 private:
     std::shared_ptr<spdlog::logger> logger_;
