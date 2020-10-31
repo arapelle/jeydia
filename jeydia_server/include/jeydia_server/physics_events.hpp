@@ -38,15 +38,16 @@ private:
     bool valid_ = false;
 };
 
-class Moved_in_event : public Move_event
+class Overlap_began_event : public Move_event
 {
 public:
     using Move_event::Move_event;
 };
 
-class Moved_out_event : public Move_event
+class Overlap_ended_event : public Move_event
 {
 public:
     using Move_event::Move_event;
 };
+
 }
