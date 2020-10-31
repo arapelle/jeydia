@@ -17,6 +17,7 @@ public:
     inline bool is_traversable() const { return !solid_; }
     inline bool is_levitating() const { return levitating_; }
     inline bool is_placed() const { return placed_in_world_counter > 0; }
+    void set_dynamic(bool dynamic);
     void set_solid(bool solid);
     inline void set_levitating(bool levitating) { levitating_ = levitating; }
 
