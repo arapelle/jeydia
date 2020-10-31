@@ -38,6 +38,7 @@ bool Map::place_body(Physics_body &body, Position position)
                 body.mutable_position() = position;
                 body.inc_placed_in_world_counter();
                 emit_solid_body_moved_in_(body, bad_position, position, Cartographic_directions::bad_direction);
+                apply_gravity_(body, square);
                 return true;
             }
         }
@@ -47,6 +48,7 @@ bool Map::place_body(Physics_body &body, Position position)
             body.mutable_position() = position;
             body.inc_placed_in_world_counter();
             emit_traversable_body_moved_in_(body, bad_position, position, Cartographic_directions::bad_direction);
+            apply_gravity_(body, square);
             return true;
         }
     }
@@ -250,6 +252,7 @@ void Map::move_solid_body_(Physics_body& body, Physics_square& square, Physics_s
     nsquare.set_solid_body(body);
     emit_solid_body_moved_out_(body, pos, npos, dir);
     emit_solid_body_moved_in_(body, pos, npos, dir);
+    apply_gravity_(body, square);
 }
 
 void Map::move_traversable_body_(Physics_body &body, Physics_square &square, Physics_square &nsquare,
@@ -259,6 +262,7 @@ void Map::move_traversable_body_(Physics_body &body, Physics_square &square, Phy
     square.remove_traversable_body(body);
     emit_traversable_body_moved_out_(body, pos, npos, dir);
     emit_traversable_body_moved_in_(body, pos, npos, dir);
+    apply_gravity_(body, square);
 }
 
 bool Map::treat_move_collision_(Physics_body &body, Physics_body& nbody, Physics_square &nsquare,
