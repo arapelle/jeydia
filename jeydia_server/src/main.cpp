@@ -70,7 +70,6 @@ int main(int argc, char** argv)
     app.create_main_module<jeydia::Times_up_module>();
     app.create_module<jeydia::First_module>().set_frequency(2);
     app.create_module<jeydia::Second_module>().set_frequency(3);
-    app.create_module<jeydia::Game_module>().set_frequency(3);
     app.init();
     app.run();
 

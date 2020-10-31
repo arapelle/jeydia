@@ -22,6 +22,8 @@ public:
     using type = typename multi_task_application_::rebind_t<app_type>;
 };
 
+class Game_module;
+
 class Application : public Application_base::type<Application>
 {
 private:
@@ -31,6 +33,14 @@ public:
     using Base_::Base_;
 
     void init();
+    inline const Game_module& game_module() const { return *game_module_; }
+    inline Game_module& game_module() { return *game_module_; }
+
+private:
+    void create_modules_();
+
+private:
+    Game_module* game_module_ = nullptr;
 };
 
 }
