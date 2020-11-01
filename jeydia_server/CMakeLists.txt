@@ -36,6 +36,7 @@ set(sources
     src/physics/physics_body.cpp
     src/physics/physics_events.cpp
     src/main.cpp
+    src/energy_entity.cpp
     src/physics_entity.cpp
     src/game_module.cpp
     src/game_entity.cpp
