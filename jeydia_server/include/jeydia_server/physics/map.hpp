@@ -29,12 +29,6 @@ public:
     bool remove_body(Physics_body& body);
     void apply_gravity();
 
-    bool read_from_file(const std::filesystem::path& filepath);
-
-private:
-    bool read_ground_from_stream_(std::istream& stream);
-    bool read_main_from_stream_(std::istream& stream);
-
 private:
     bool move_body_(Physics_body& body, Direction dir, uint8_t force);
     void move_solid_body_(Physics_body& body, Physics_square& square, Physics_square& nsquare,

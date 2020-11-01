@@ -1,6 +1,7 @@
 #pragma once
 
 #include "physics/map.hpp"
+#include "game_entity.hpp"
 #include "module.hpp"
 #include <evnt/event_listener.hpp>
 #include <wgen/default_syllabary.hpp>
@@ -35,11 +36,19 @@ private:
     void agent_absorbs_energy_(Overlap_began_event& event, Agent& agent, Energy_entity& energy);
 
 private:
+    void connect_events_();
+    void create_grounds_();
     void read_map_from_file_();
+    bool read_map_from_file_(const std::filesystem::path& file);
+    bool read_ground_from_stream_(std::istream& stream);
+    bool read_main_from_stream_(std::istream& stream);
+    void print_level_() const;
 
 private:
     Map map_;
+    Physics_body plain_ground_;
     wgen::default_syllabary syllabary_;
+    std::unordered_set<std::unique_ptr<Game_entity>> map_entities_;
 };
 
 }
