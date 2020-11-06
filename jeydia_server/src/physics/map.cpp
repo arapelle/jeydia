@@ -17,6 +17,25 @@ void Map::set_program_tools(std::shared_ptr<spdlog::logger> logger, evnt::event_
     event_manager_ = &event_manager;
 }
 
+bool Map::set_ground(Physics_body& ground, Position position)
+{
+    if (!are_program_tools_set())
+        throw std::runtime_error("Program tools must be set.");
+
+    if (contains(position))
+    {
+        Physics_square& square = get(position);
+        square.set_ground(ground);
+        if (Physics_body* solid_body = square.solid_body_ptr(); solid_body)
+        {
+            apply_gravity_(*solid_body, square);
+        }
+        return true;
+    }
+
+    return false;
+}
+
 bool Map::place_body(Physics_body &body, Position position)
 {
     if (!are_program_tools_set())

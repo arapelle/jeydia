@@ -17,7 +17,6 @@ public:
     bool is_free() const;
     inline const Physics_body* ground_ptr() const { return ground_; }
     inline Physics_body* ground_ptr() { return ground_; }
-    inline void set_ground(Physics_body& ground) { ground_ = &ground; }
     inline void remove_ground() { ground_ = nullptr; }
     inline const Physics_body* solid_body_ptr() const { return solid_body_; }
     inline Physics_body* solid_body_ptr() { return solid_body_; }
@@ -30,6 +29,7 @@ public:
 
 private:
     friend class Map;
+    inline void set_ground(Physics_body& ground) { ground_ = &ground; }
     inline void set_solid_body(Physics_body& solid_body) { solid_body_ = &solid_body; }
     inline void add_traversable_body(Physics_body& traversable_body) { traversable_bodies_.insert(&traversable_body); }
     inline void remove_solid_body() { solid_body_ = nullptr; }

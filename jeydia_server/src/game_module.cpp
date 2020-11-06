@@ -125,6 +125,8 @@ bool Game_module::read_ground_from_stream_(std::istream& stream)
     {
         for (uint16_t i = 0; i < map_.width(); ++i)
         {
+            Position pos(i,j);
+
             char ch = lines[j][i];
             Physics_body* ground = nullptr;
             switch (ch)
@@ -138,8 +140,7 @@ bool Game_module::read_ground_from_stream_(std::istream& stream)
                 SPDLOG_ERROR("Ground type is unkwnon '{}'. Plain ground is used by default.", ch);
                 ground = &plain_ground_;
             }
-            Physics_square& square = map_.get(i,j);
-            square.set_ground(*ground);
+            map_.set_ground(*ground, pos);
         }
     }
 
